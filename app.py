@@ -1,3 +1,16 @@
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, make_response
+from db import perform_registration, perform_login, execute_search_query, execute_full_text_search, \
+    fetch_borrowed_items, return_document_and_apply_fees, get_lend_date, calculate_weeks_overdue, get_top_rated_books, \
+    get_book_by_id, get_name_by_email
+from decimal import Decimal
+from flask_cors import CORS, cross_origin
+
+app = Flask(__name__)
+CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
+
+
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     return render_template('index.html')

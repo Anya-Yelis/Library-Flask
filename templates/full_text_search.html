@@ -1,0 +1,110 @@
+{% block search_and_display %}
+<!-- Search Form -->
+<label for="keywords">Enter Keywords:</label>
+<input type="text" id="keywords" name="keywords" onkeyup="liveSearch()" autocomplete="off">
+
+<hr>
+
+<!-- Div to display dynamic search results -->
+<div id="search-results" class="results-grid">
+    <!-- Results will be dynamically inserted here -->
+</div>
+
+<!-- Display Top-Rated Books in a Genre -->
+<h2>Here are Some Popular Books in the {{ genre }} Genre</h2>
+{% if top_books %}
+    <div class="book-grid">
+        {% for book in top_books %}
+        <!-- Wrap each book tile content in an anchor tag -->
+        <a href="{{ url_for('book_detail', book_id=book[0]) }}" class="book-tile">  <!-- Replace 'book_detail' with your route name -->
+            <img src="{{ book[4] }}" alt="Cover Image" class="book-cover">
+            <div class="book-info">
+                <h2>{{ book[1] }}</h2>
+                <p><strong>Author:</strong> {{ book[2] }}</p>
+                <p><strong>Publisher:</strong> {{ book[8] }}</p>
+                <p><strong>Year:</strong> {{ book[9] }}</p>
+                <p><strong>Edition:</strong> {{ book[6] }}</p>
+                <p><strong>Pages:</strong> {{ book[7] }}</p>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No books available.</p>
+{% endif %}
+
+<script>
+// Function to perform live search
+function liveSearch() {
+    const keywords = document.getElementById('keywords').value;
+
+    if (keywords.length > 0) {
+        // Send AJAX request to the Flask route
+        fetch('/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-Requested-With': 'XMLHttpRequest'  // Important header to identify AJAX request
+            },
+            body: new URLSearchParams({keywords: keywords})
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Clear previous results
+            const resultsDiv = document.getElementById('search-results');
+            resultsDiv.innerHTML = '';
+
+            // Check if there are results
+            if (data.results.length > 0) {
+                // Loop through the results and create clickable tiles for each result
+                data.results.forEach(result => {
+                    // Create a link element that wraps the tile
+                    const link = document.createElement('a');
+                    link.href = `/book/${result[0]}`; // Replace with your desired route and parameters
+                    link.classList.add('result-tile');
+
+                    // Create a container for the tile content
+                    const tile = document.createElement('div');
+                    tile.classList.add('result-content');
+
+                    // Create and append the cover image
+                    const img = document.createElement('img');
+                    img.src = result[14]; // Assuming coverimg is at index 14
+                    img.alt = 'Cover Image';
+                    img.classList.add('result-cover');
+                    tile.appendChild(img);
+
+                    // Create and append the result info
+                    const infoDiv = document.createElement('div');
+                    infoDiv.classList.add('result-info');
+                    infoDiv.innerHTML = `
+                        <h2>${result[6] ? result[6] : result[10]}</h2>
+                        <p><strong>Type:</strong> ${result[4]}</p>
+                        <p><strong>Publisher:</strong> ${result[2]}</p>
+                        <p><strong>Year:</strong> ${result[3]}</p>
+                        <p><strong>Available Copies:</strong>
+                        ${result[result.length - 2] === 'Unlimited' ? 'Unlimited' : result[result.length - 2]}
+                        </p>
+                        ${result[result.length - 2] !== 'Unlimited' && parseInt(result[result.length - 2]) === 0 ? `<p><strong>Next Available Date:</strong> ${result[result.length - 1]}</p>` : ''}
+                    `;
+                    tile.appendChild(infoDiv);
+
+                    // Append the tile content to the link
+                    link.appendChild(tile);
+
+                    // Append the link to the results div
+                    resultsDiv.appendChild(link);
+                });
+            } else {
+                resultsDiv.innerHTML = '<p>No results found.</p>';
+            }
+        })
+        .catch(error => console.error('Error fetching search results:', error));
+    } else {
+        document.getElementById('search-results').innerHTML = ''; // Clear results if the input is empty
+    }
+}
+</script>
+
+{% endblock %}
+

@@ -1,0 +1,12 @@
+{% extends "client_menu.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+<h2>Search</h2>
+
+{% include 'full_text_search.html' %}
+{% block search_and_display %}{% endblock %}
+
+
+{% endblock %}

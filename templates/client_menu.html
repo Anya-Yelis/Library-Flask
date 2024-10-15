@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Client Menu{% endblock %}</title>
+    <!-- Add any common CSS or JavaScript files here -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Welcome, {{ name }}!</h1>
+        <!-- Add a common navigation bar here if needed -->
+        <nav>
+            <a href="{{ url_for('client_home') }}">Home</a> |
+            <a href="{{ url_for('client_return', email=email) }}">Return a Document</a> |
+{#            <a href="{{ url_for('add_delete_payment', email=email) }}">Manage Payment Methods</a> |#}
+            <a href="{{ url_for('pay_fee', email=email) }}">Pay Library Fees</a> |
+            <a href="{{ url_for('main_menu', email=email) }}">Sign Out</a>
+        </nav>
+        <hr>
+    </header>
+
+    <!-- Block for messages -->
+    <div class="message">
+        {% block message %}
+        <!-- This block can be overridden in child templates -->
+        {% endblock %}
+    </div>
+
+    <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flashes">
+                    {% for category, message in messages %}
+                        <li class="{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        {% block body %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <hr>
+        <p>&copy; 2024 Library Management System. All rights reserved.</p>
+    </footer>
+</body>
+</html>

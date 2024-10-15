@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ book[6] }} - Details</title> <!-- book[6] is assumed to be the title -->
+</head>
+<body>
+    <h1>{{ book[6] }}</h1>
+    <p><strong>Author:</strong> {{ book[7] }}</p>
+    <p><strong>Publisher:</strong> {{ book[2] }}</p>
+    <p><strong>Year:</strong> {{ book[3] }}</p>
+    <p><strong>Edition:</strong> {{ book[8] }}</p>
+    <p><strong>Pages:</strong> {{ book[9] }}</p>
+    <img src="{{ book[10] }}" alt="Cover Image">
+    <!-- Add any additional book details you want to display -->
+    <a href="{{ url_for('main_menu') }}">Back to Main Menu</a>
+</body>
+</html>

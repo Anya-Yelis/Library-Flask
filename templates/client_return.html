@@ -1,0 +1,32 @@
+{% extends "client_menu.html" %}
+
+{% block title %}Return Documents{% endblock %}
+
+{% block body %}
+<h1>Return Borrowed Documents</h1>
+
+
+<!-- Check if there are any borrowed items -->
+{% if borrowed_items %}
+    <h2>Borrowed Documents</h2>
+    <ul>
+        {% for doc in borrowed_items %}
+            <li>
+                <strong>Document ID:</strong> {{ doc[0] }} <br>
+                <strong>Lend Date:</strong> {{ doc[1].strftime('%Y-%m-%d') }} <br>
+                
+                <!-- Return Button Form -->
+                <form method="POST" action="{{ url_for('client_return', email=email) }}">
+                    <input type="hidden" name="document_id" value="{{ doc[0] }}">
+                    <input type="hidden" name="lend_date" value="{{ doc[1].strftime('%Y-%m-%d') }}">
+                    <button type="submit" class="btn btn-primary">Return Document</button>
+                </form>
+            </li>
+            <hr>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No borrowed documents to return.</p>
+{% endif %}
+
+{% endblock %}

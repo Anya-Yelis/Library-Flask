@@ -1,0 +1,69 @@
+{#{% extends "base.html" %}#}
+{##}
+{#{% block title %}Search By Attributes{% endblock %}#}
+{##}
+{#{% block body %}#}
+{#    <h2>Welcome, {{ email }}!</h2>#}
+{#    <ul>#}
+{#        <li><a href="{{ url_for('search', email=email) }}">Search By Attributes</a></li>#}
+{#        <li><a href="{{ url_for('full_search', email=email) }}">Full Search</a></li>#}
+{#        <li><a href="{{ url_for('client_borrow', email=email) }}">Borrow a Document</a></li>#}
+{#        <li><a href="{{ url_for('client_return', email=email) }}">Return a Document</a></li>#}
+{#        <li><a href="{{ url_for('add_delete_payment', email=email) }}">Manage Payment Methods</a></li>#}
+{#        <li><a href="{{ url_for('pay_fee', email=email) }}">Pay Library Fees</a></li>#}
+{#    </ul>#}
+{#{% endblock %}#}
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search - Library Management System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Search Documents</h1>
+        <nav>
+            <a href="{{ url_for('main_menu') }}">Home</a> |
+        </nav>
+        <hr>
+    </header>
+
+    <main>
+        <h2>Client Dashboard - {{ email }}</h2>
+        <form method="post" action="{{ url_for('search') }}">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title"><br>
+
+            <label for="authors">Author(s):</label>
+            <input type="text" id="authors" name="authors"><br>
+
+            <label for="publisher">Publisher:</label>
+            <input type="text" id="publisher" name="publisher"><br>
+
+            <label for="sort_by">Sort by (title, authors, publisher, year):</label>
+            <input type="text" id="sort_by" name="sort_by" value="title"><br>
+
+            <label for="order">Order (asc or desc):</label>
+            <input type="text" id="order" name="order" value="asc"><br>
+
+            <label for="limit">Limit results to (number):</label>
+            <input type="number" id="limit" name="limit" value="10"><br>
+
+            <input type="submit" value="Go">
+            <a href="{{ url_for('main_menu') }}">Back</a>
+{#            <a href="{{ url_for('exit_program') }}">Exit</a>#}
+        </form>
+    </main>
+
+    <footer>
+        <hr>
+        <p>&copy; 2024 Library Management System. All rights reserved.</p>
+    </footer>
+</body>
+</html>

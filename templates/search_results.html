@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Results - Library Management System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Search Results</h1>
+        <nav>
+            <a href="{{ url_for('main_menu') }}">Home</a> |
+        </nav>
+        <hr>
+    </header>
+
+    <main>
+        {% if results %}
+            <ul>
+                {% for result in results %}
+                    <li>
+                        <strong>Type:</strong> {{ result[4] }} <br>
+                        <strong>Title/Name:</strong> {{ result[6] if result[6] else result[10] }} <br>
+                        <strong>Publisher:</strong> {{ result[2] }} <br>
+                        <strong>Year:</strong> {{ result[3].strftime('%Y') }} <br>
+                        <strong>Available Copies:</strong>
+                        {% if result[-2] == 'Unlimited' %}
+                            Unlimited
+                        {% else %}
+                            {{ result[-2] }}
+                        {% endif %}
+                        <br>
+
+                        <!-- Display "Next Available Date" only if available copies is 0 -->
+                        {% if result[-2] != 'Unlimited' and result[-2]|int == 0 %}
+                            <strong>Next Available Date:</strong> {{ result[-1] }} <br>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No results found.</p>
+        {% endif %}
+        <a href="{{ url_for('search') }}">Back to Search</a>
+    </main>
+
+    <footer>
+        <hr>
+        <p>&copy; 2024 Library Management System. All rights reserved.</p>
+    </footer>
+</body>
+</html>

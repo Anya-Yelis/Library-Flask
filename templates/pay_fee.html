@@ -1,0 +1,29 @@
+<!-- pay_fee.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pay Library Fees</title>
+</head>
+<body>
+    <h1>Pay Library Fees</h1>
+
+    <!-- Payment Form -->
+    <form method="POST" action="{{ url_for('pay_fee', email=email) }}">
+        <p>Click below to process your payment:</p>
+        <button type="submit">Pay Fee</button>
+    </form>
+
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+</body>
+</html>

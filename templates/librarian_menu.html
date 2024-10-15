@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Librarian Menu{% endblock %}
+
+{% block body %}
+    <h2>Welcome, {{ email }}!</h2>
+    <ul>
+        <li><a href="{{ url_for('sign_up') }}">Register New Clients</a></li>
+        <li><a href="{{ url_for('update_client_interface', email=email) }}">Update Client Information</a></li>
+        <li><a href="{{ url_for('delete_client_interface', email=email) }}">Delete Clients</a></li>
+        <li><a href="{{ url_for('manage_documents') }}">Manage Documents</a></li>
+    </ul>
+{% endblock %}
